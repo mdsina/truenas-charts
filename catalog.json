@@ -8,7 +8,7 @@
             "description": "Dedicated App for using Docker-Compose on TrueNAS SCALE",
             "healthy": true,
             "healthy_error": null,
-            "home": "https://github.com/mdsina/truenas-charts",
+            "home": "https://github.com/mdsina/truenas-charts/tree/main/dev/docker-compose",
             "location": "/home/runner/work/catalog/catalog/dev/docker-compose",
             "latest_version": "1.0.0",
             "latest_app_version": "latest",
