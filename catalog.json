@@ -1,0 +1,36 @@
+{
+    "dev": {
+        "docker-compose": {
+            "app_readme": "<p>Dedicated App for using Docker-Compose on TrueNAS SCALE</p>\n<p>This App is supplied by TrueCharts, for more information visit the manual: <a href=\"https://truecharts.org/charts/stable/docker-compose\">https://truecharts.org/charts/stable/docker-compose</a></p>\n<hr />\n<p>TrueCharts can only exist due to the incredible effort of our staff.\nPlease consider making a <a href=\"https://truecharts.org/sponsor\">donation</a> or contributing back to the project any way you can!</p>",
+            "categories": [
+                "docker"
+            ],
+            "description": "Dedicated App for using Docker-Compose on TrueNAS SCALE",
+            "healthy": true,
+            "healthy_error": null,
+            "home": "https://github.com/mdsina/truenas-charts",
+            "location": "/home/runner/work/catalog/catalog/dev/docker-compose",
+            "latest_version": "1.0.0",
+            "latest_app_version": "24.0.5",
+            "latest_human_version": "24.0.5_1.0.0",
+            "last_update": "2023-08-06 17:38:37",
+            "name": "docker-compose",
+            "recommended": false,
+            "title": "Docker-compose",
+            "maintainers": [
+                {
+                    "email": "truenas-github@mds.name",
+                    "name": "MDS",
+                    "url": "https://github.com/mdsina/truenas-charts"
+                }
+            ],
+            "tags": [],
+            "screenshots": [],
+            "sources": [
+                "https://github.com/mdsina/truenas-charts",
+                "https://github.com/truecharts/charts/tree/master/charts/stable/docker-compose"
+            ],
+            "icon_url": "https://truecharts.org/img/hotlink-ok/chart-icons/docker-compose.png"
+        }
+    }
+}
