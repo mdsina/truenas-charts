@@ -66,19 +66,18 @@ workload:
           lifecycle:
             postStart:
               type: exec
-              exec:
-                command:
-                  - /bin/bash
-                  - -c
-                  - |
-                    echo "TEST TEST TEST TEST" >> /proc/1/fd/1;
-                    counter=0;
-                    while ! docker info > /dev/null 2>&1 && [[ ${counter} -lt 10 ]]; do
-                      echo "docker not running yet. Waiting..." >> /proc/1/fd/1;
-                      sleep 5;
-                      counter=$((counter+1));
-                    done
-                    docker-compose -f "${COMPOSE_FILE}" up -d && echo "Loading COMPOSE_FILE at location ${COMPOSE_FILE}" >> /proc/1/fd/1;
+              command:
+                - /bin/bash
+                - -c
+                - |
+                  echo "TEST TEST TEST TEST" >> /proc/1/fd/1;
+                  counter=0;
+                  while ! docker info > /dev/null 2>&1 && [[ ${counter} -lt 10 ]]; do
+                    echo "docker not running yet. Waiting..." >> /proc/1/fd/1;
+                    sleep 5;
+                    counter=$((counter+1));
+                  done
+                  docker-compose -f "${COMPOSE_FILE}" up -d && echo "Loading COMPOSE_FILE at location ${COMPOSE_FILE}" >> /proc/1/fd/1;
 
     type: StatefulSet
     replicas: 1
