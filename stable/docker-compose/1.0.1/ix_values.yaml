@@ -67,7 +67,7 @@ workload:
             - -c
             - |
               echo "TEST TEST TEST TEST"
-              dockerd-entrypoint.sh &>> /proc/1/fd/1;
+              setsid dockerd-entrypoint.sh >> /proc/1/fd/1;
               counter=0;
               while ! docker info > /dev/null 2>&1 && [[ ${counter} -lt 10 ]]; do
                 echo "docker not running yet. Waiting..." >> /proc/1/fd/1;
