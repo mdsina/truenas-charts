@@ -51,13 +51,13 @@ workload:
         main:
           probes:
             liveness:
-              initialDelaySeconds: 30
+              initialDelaySeconds: 100
               type: tcp
             readiness:
-              initialDelaySeconds: 30
+              initialDelaySeconds: 100
               type: tcp
             startup:
-              initialDelaySeconds: 30
+              initialDelaySeconds: 100
               type: tcp
           env:
             DOCKER_TLS_CERTDIR: /certs
