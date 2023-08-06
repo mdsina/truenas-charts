@@ -65,6 +65,7 @@ workload:
             TINI_SUBREAPER: "true"
           lifecycle:
             postStart:
+              type: exec
               exec:
                 command:
                   - /bin/bash
