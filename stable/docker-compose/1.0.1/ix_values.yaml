@@ -62,6 +62,7 @@ workload:
           env:
             DOCKER_TLS_CERTDIR: /certs
             COMPOSE_FILE: ""
+            TINI_SUBREAPER: "true"
           command:
             - /bin/bash
             - -c
