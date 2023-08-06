@@ -12,7 +12,7 @@
             "location": "/home/runner/work/catalog/catalog/dev/docker-compose",
             "latest_version": "1.0.1",
             "latest_app_version": "latest",
-            "latest_human_version": "latest_1.0.1",
+            "latest_human_version": "latest_1.0.2",
             "last_update": "2023-08-06 20:45:40",
             "name": "docker-compose",
             "recommended": false,
