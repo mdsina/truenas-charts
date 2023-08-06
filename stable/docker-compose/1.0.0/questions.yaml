@@ -683,16 +683,6 @@ questions:
                   type: boolean
                   default: true
                   hidden: true
-              - variable: labels
-                label: labels
-                schema:
-                  type: dict
-                  default: {}
-              - variable: annotations
-                label: annotations
-                schema:
-                  type: dict
-                  default: { }
               - variable: name
                 label: Name
                 schema:
