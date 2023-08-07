@@ -107,12 +107,8 @@ jobs:
 
         if [ "${{github.event_name}}" == "pull_request" ]; then
           echo ::set-output name=push::false
-          echo ::set-output name=cache_from::"type=registry,ref=gitea.mds.name/mds/truenas/${{ matrix.container }}:buildcache" || echo ::set-output name=cache_from::""
-          echo ::set-output name=cache_to::""
         else
           echo ::set-output name=push::true
-          echo ::set-output name=cache_from::"type=registry,ref=gitea.mds.name/mds/truenas/${{ matrix.container }}:buildcache"
-          echo ::set-output name=cache_to::"type=registry,ref=gitea.mds.name/mds/truenas/${{ matrix.container }}:buildcache,mode=max"
         fi
 
     - name: Get Time
@@ -171,8 +167,6 @@ jobs:
         file: ./${{ steps.prep.outputs.category }}/${{ matrix.container }}/Dockerfile
         push: ${{ steps.prep.outputs.push }}
         labels: ${{ steps.meta.outputs.labels }}
-        cache-from: ${{ steps.prep.outputs.cache_from }}
-        cache-to: ${{ steps.prep.outputs.cache_to }}
         tags: |
           gitea.mds.name/mds/truenas/${{ matrix.container }}:latest
           gitea.mds.name/mds/truenas/${{ matrix.container }}:v${{ steps.prep.outputs.version }}
