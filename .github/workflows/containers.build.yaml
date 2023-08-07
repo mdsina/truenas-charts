@@ -186,7 +186,7 @@ jobs:
     - name: Verify the pushed tags
       if: github.event_name != 'pull_request'
       run: |
-         cosign verify gitea.mds.name/mds/truenas/${{ matrix.container }}@${{ steps.push.outputs.digest }} --certificate-oidc-issuer=https://token.actions.githubusercontent.com --certificate-identity=https://github.com/mdsina/truenas-charts/.github/workflows/containers.build.yaml@refs/heads/master
+         cosign verify gitea.mds.name/mds/truenas/${{ matrix.container }}@${{ steps.push.outputs.digest }} --certificate-oidc-issuer=https://token.actions.githubusercontent.com --certificate-identity=https://github.com/mdsina/truenas-charts/.github/workflows/containers.build.yaml@refs/heads/main
 
     - name: Generate SBOM
       if: github.event_name != 'pull_request'
@@ -202,7 +202,7 @@ jobs:
     - name: Verify SBOM attestation
       if: github.event_name != 'pull_request'
       run: |
-        cosign verify-attestation gitea.mds.name/mds/truenas/${{ matrix.container }}@${{ steps.push.outputs.digest }}  --type https://spdx.dev/Document --certificate-oidc-issuer=https://token.actions.githubusercontent.com --certificate-identity=https://github.com/mdsina/truenas-charts/.github/workflows/containers.build.yaml@refs/heads/master | jq '.payload |= @base64d | .payload | fromjson'
+        cosign verify-attestation gitea.mds.name/mds/truenas/${{ matrix.container }}@${{ steps.push.outputs.digest }}  --type https://spdx.dev/Document --certificate-oidc-issuer=https://token.actions.githubusercontent.com --certificate-identity=https://github.com/mdsina/truenas-charts/.github/workflows/containers.build.yaml@refs/heads/main | jq '.payload |= @base64d | .payload | fromjson'
 
     - name: Generate provenance
       id: gen-prov
@@ -232,7 +232,7 @@ jobs:
       if: github.event_name != 'pull_request'
       id: verf-prov
       run: |
-        cosign verify-attestation gitea.mds.name/mds/truenas/${{ matrix.container }}@${{ steps.push.outputs.digest }} --type slsaprovenance --certificate-oidc-issuer=https://token.actions.githubusercontent.com --certificate-identity=https://github.com/mdsina/truenas-charts/.github/workflows/containers.build.yaml@refs/heads/master | jq '.payload |= @base64d | .payload | fromjson'
+        cosign verify-attestation gitea.mds.name/mds/truenas/${{ matrix.container }}@${{ steps.push.outputs.digest }} --type slsaprovenance --certificate-oidc-issuer=https://token.actions.githubusercontent.com --certificate-identity=https://github.com/mdsina/truenas-charts/.github/workflows/containers.build.yaml@refs/heads/main | jq '.payload |= @base64d | .payload | fromjson'
       env:
         COSIGN_EXPERIMENTAL: 1
 
