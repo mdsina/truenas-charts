@@ -1,7 +1,7 @@
 image:
-  repository: docker
+  repository: gitea.mds.name/mds/truenas/dind
   pullPolicy: IfNotPresent
-  tag: dind
+  tag: latest
 hostNetwork: true
 
 securityContext:
@@ -54,7 +54,6 @@ workload:
                 - /bin/bash
                 - -c
                 - |
-                  echo "TEST TEST TEST TEST" >> /proc/1/fd/1;
                   counter=0;
                   while ! docker info > /dev/null 2>&1 && [[ ${counter} -lt 10 ]]; do
                     echo "docker not running yet. Waiting..." >> /proc/1/fd/1;

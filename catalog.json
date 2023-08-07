@@ -8,12 +8,12 @@
             "description": "Dedicated App for using Docker-Compose on TrueNAS SCALE",
             "healthy": true,
             "healthy_error": null,
-            "home": "https://github.com/mdsina/truenas-charts/tree/main/dev/docker-compose",
+            "home": "https://github.com/mdsina/truenas-charts/tree/main/stable/docker-compose",
             "location": "/home/runner/work/catalog/catalog/dev/docker-compose",
-            "latest_version": "1.0.4",
+            "latest_version": "1.0.5",
             "latest_app_version": "latest",
-            "latest_human_version": "latest_1.0.4",
-            "last_update": "2023-08-06 20:49:40",
+            "latest_human_version": "latest_1.0.5",
+            "last_update": "2023-08-08 00:49:40",
             "name": "docker-compose",
             "recommended": false,
             "title": "Docker-compose",
@@ -30,7 +30,7 @@
                 "https://github.com/mdsina/truenas-charts",
                 "https://github.com/truecharts/charts/tree/master/charts/stable/docker-compose"
             ],
-            "icon_url": "https://truecharts.org/img/hotlink-ok/chart-icons/docker-compose.png"
+            "icon_url": "https://www.docker.com/wp-content/uploads/2022/03/vertical-logo-monochromatic.png"
         }
     }
 }
