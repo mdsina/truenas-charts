@@ -88,11 +88,10 @@ spec:
   {{- else if eq $objectData.type "ExternalIP" -}}
     {{- include "tc.v1.common.lib.service.spec.externalIP" (dict "rootCtx" $rootCtx "objectData" $objectData) | trim | nindent 2 -}}
   {{- end -}}
-  {{- $commonPorts := fromYaml(include "tc.v1.common.lib.service.ports" (dict "rootCtx" $rootCtx "objectData" $objectData) | trim) -}}
-  {{- $customPorts := fromYaml(include "tc.v1.common.lib.service.portsDef" (dict "rootCtx" $rootCtx "objectData" $objectData) | trim) -}}
-  {{- $allPorts := merge $commonPorts $customPorts -}}
+  {{- with (include "tc.v1.common.lib.service.ports" (dict "rootCtx" $rootCtx "objectData" $objectData) | trim) }}
   ports:
-    {{- toYaml($allPorts) | nindent 4 }}
+    {{- . | nindent 4 }}
+  {{- end -}}
   {{- if not (mustHas $objectData.type $specialTypes) }}
   selector:
     {{- if $objectData.selectorLabels }}
