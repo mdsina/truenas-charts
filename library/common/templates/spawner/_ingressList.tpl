@@ -1,7 +1,7 @@
 {{/* Renders the Ingress objects required by the chart */}}
 {{- define "tc.v1.common.spawner.ingressList" -}}
   {{/* Generate named ingresses as required */}}
-  {{- range $ingress := .Values.ingress -}}
+  {{- range $ingress := .Values.ingressList -}}
     {{- $name := $ingress.name -}}
     {{- if $ingress.enabled -}}
       {{- $ingressValues := $ingress -}}
