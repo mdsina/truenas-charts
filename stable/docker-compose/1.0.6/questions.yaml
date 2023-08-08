@@ -232,90 +232,90 @@ questions:
                             schema:
                               type: string
                               required: true
-  - variable: service
-    group: Networking and Services
-    label: Configure Service(s)
-    schema:
-      additional_attrs: true
-      type: dict
-      attrs:
-        - variable: main
-          label: "Main Service"
-          description: "The Primary service on which the healthcheck runs, often the webUI"
-          schema:
-            additional_attrs: true
-            type: dict
-            attrs:
-              - variable: enabled
-                label: Enable the Service
-                schema:
-                  type: boolean
-                  default: true
-                  hidden: true
-              - variable: type
-                label: Service Type
-                description: "ClusterIP's are only internally available and Loadbalancer exposes the service using the system loadbalancer"
-                schema:
-                  type: string
-                  default: LoadBalancer
-                  hidden: true
-                  enum:
-                    - value: LoadBalancer
-                      description: LoadBalancer (Expose Ports)
-                    - value: ClusterIP
-                      description: ClusterIP (Do Not Expose Ports)
-                    - value: Simple
-                      description: Deprecated CHANGE THIS
-              - variable: loadBalancerIP
-                label: LoadBalancer IP
-                description: "MetalLB Only: Selects the Loadbalancer IP to expose on. Required when using PortalButton with MetalLB"
-                schema:
-                  show_if: [["type", "=", "LoadBalancer"]]
-                  type: string
-                  default: ""
-              - variable: portsDef
-                label: "Service's Port(s) Configuration"
-                schema:
-                  type: list
-                  items:
-                    - variable: portItem
-                      schema:
-                        additional_attrs: true
-                        type: dict
-                        attrs:
-                          - variable: name
-                            label: "Service name"
-                          - variable: portValues
-                            label: "Port Definition"
-                            schema:
-                              additional_attrs: true
-                              type: dict
-                              attrs:
-                                - variable: port
-                                  label: "Port"
-                                  description: "This port exposes the container port on the service"
-                                  schema:
-                                    type: int
-                                    required: true
-                                - variable: targetPort
-                                  label: "Target Port"
-                                  description: "Port inside the container"
-                                  schema:
-                                    type: int
-                                    required: true
-                                - variable: protocol
-                                  label: "Protocol"
-                                  description: "Protocol"
-                                  schema:
-                                    type: string
-                                    required: true
-                                    enum:
-                                      - value: tcp
-                                        description: tcp
-                                      - value: http
-                                        description: http
-                                      - value: https
-                                        description: https
+#  - variable: service
+#    group: Networking and Services
+#    label: Configure Service(s)
+#    schema:
+#      additional_attrs: true
+#      type: dict
+#      attrs:
+#        - variable: main
+#          label: "Main Service"
+#          description: "The Primary service on which the healthcheck runs, often the webUI"
+#          schema:
+#            additional_attrs: true
+#            type: dict
+#            attrs:
+#              - variable: enabled
+#                label: Enable the Service
+#                schema:
+#                  type: boolean
+#                  default: true
+#                  hidden: true
+#              - variable: type
+#                label: Service Type
+#                description: "ClusterIP's are only internally available and Loadbalancer exposes the service using the system loadbalancer"
+#                schema:
+#                  type: string
+#                  default: LoadBalancer
+#                  hidden: true
+#                  enum:
+#                    - value: LoadBalancer
+#                      description: LoadBalancer (Expose Ports)
+#                    - value: ClusterIP
+#                      description: ClusterIP (Do Not Expose Ports)
+#                    - value: Simple
+#                      description: Deprecated CHANGE THIS
+#              - variable: loadBalancerIP
+#                label: LoadBalancer IP
+#                description: "MetalLB Only: Selects the Loadbalancer IP to expose on. Required when using PortalButton with MetalLB"
+#                schema:
+#                  show_if: [["type", "=", "LoadBalancer"]]
+#                  type: string
+#                  default: ""
+#              - variable: portsDef
+#                label: "Service's Port(s) Configuration"
+#                schema:
+#                  type: list
+#                  items:
+#                    - variable: portItem
+#                      schema:
+#                        additional_attrs: true
+#                        type: dict
+#                        attrs:
+#                          - variable: name
+#                            label: "Service name"
+#                          - variable: portValues
+#                            label: "Port Definition"
+#                            schema:
+#                              additional_attrs: true
+#                              type: dict
+#                              attrs:
+#                                - variable: port
+#                                  label: "Port"
+#                                  description: "This port exposes the container port on the service"
+#                                  schema:
+#                                    type: int
+#                                    required: true
+#                                - variable: targetPort
+#                                  label: "Target Port"
+#                                  description: "Port inside the container"
+#                                  schema:
+#                                    type: int
+#                                    required: true
+#                                - variable: protocol
+#                                  label: "Protocol"
+#                                  description: "Protocol"
+#                                  schema:
+#                                    type: string
+#                                    required: true
+#                                    enum:
+#                                      - value: tcp
+#                                        description: tcp
+#                                      - value: http
+#                                        description: http
+#                                      - value: https
+#                                        description: https
 
   - variable: serviceexpert
     group: Networking and Services
