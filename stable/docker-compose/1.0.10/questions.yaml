@@ -29,6 +29,8 @@ groups:
     description: Postgresql
   - name: Documentation
     description: Documentation
+  - name: Operator
+    description: Operator
 portals: {}
 questions:
   - variable: global
@@ -666,6 +668,7 @@ questions:
                   default: 0
   - variable: operator
     label: operator
+    group: Operator
     schema:
       additional_attrs: true
       type: dict
