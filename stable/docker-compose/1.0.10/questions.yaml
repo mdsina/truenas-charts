@@ -664,6 +664,23 @@ questions:
                 schema:
                   type: int
                   default: 0
+  - variable: operator
+    label: operator
+    schema:
+      additional_attrs: true
+      type: dict
+      attrs:
+        - variable: traefik
+          label: traefik
+          schema:
+            additional_attrs: true
+            type: dict
+            attrs:
+              - variable: namespace
+                label: namespace
+                schema:
+                  type: string
+                  default: "ix-traefik2"
   - variable: ingressList
     label: Add Manual Custom Ingresses
     group: Ingress
@@ -677,23 +694,6 @@ questions:
             additional_attrs: true
             type: dict
             attrs:
-              - variable: operator
-                label: operator
-                schema:
-                  additional_attrs: true
-                  type: dict
-                  attrs:
-                    - variable: traefik
-                      label: traefik
-                      schema:
-                        additional_attrs: true
-                        type: dict
-                        attrs:
-                          - variable: namespace
-                            label: namespace
-                            schema:
-                              type: string
-                              default: "ix-traefik2"
               - variable: enabled
                 label: Enable Ingress
                 schema:
