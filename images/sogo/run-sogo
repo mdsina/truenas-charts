@@ -1,0 +1,6 @@
+#!/bin/sh
+set -e
+
+runuser -u sogo -- sogod -WOWorkersCount $WORKERS -WOPidFile /var/run/sogo/sogo.pid -SOGoJWTSecret $JWT -WOPort 0.0.0.0:20000
+
+exec httpd -DFOREGROUND $@

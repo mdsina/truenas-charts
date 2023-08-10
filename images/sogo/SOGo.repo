@@ -1,0 +1,5 @@
+[sogo-nightly-v5-rhel9]
+name=Alinto SOGo Repository
+baseurl=https://packages.sogo.nu/nightly/5/rhel/9/$basearch
+gpgcheck=1
+enabled=1
