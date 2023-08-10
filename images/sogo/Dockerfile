@@ -1,4 +1,4 @@
-FROM dokken/centos-stream-9
+FROM dokken/centos-stream-9:latest
 
 RUN rpm --import "http://pgp.mit.edu/pks/lookup?op=get&search=0xCB2D3A2AA0030E2C"
 RUN rpm --import "https://keys.openpgp.org/vks/v1/by-fingerprint/74FFC6D72B925A34B5D356BDF8A27B36A6E2EAE9"
