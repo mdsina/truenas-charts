@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1
+# syntax=docker/dockerfile:1.6
 FROM dokken/centos-stream-9
 
 RUN rpm --import "http://pgp.mit.edu/pks/lookup?op=get&search=0xCB2D3A2AA0030E2C"
