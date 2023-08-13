@@ -164,7 +164,7 @@ jobs:
           CONTAINER_VER=${{ steps.prep.outputs.version }}
         context: /${{ steps.prep.outputs.category }}/${{ matrix.container }}
         platforms: ${{ steps.prep.outputs.platform }}
-        file: ./${{ steps.prep.outputs.category }}/${{ matrix.container }}/Dockerfile
+        file: ./Dockerfile
         push: ${{ steps.prep.outputs.push }}
         labels: ${{ steps.meta.outputs.labels }}
         tags: |
