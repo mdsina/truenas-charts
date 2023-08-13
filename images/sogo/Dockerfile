@@ -12,6 +12,7 @@ RUN sed -i '/enabled=1/a exclude=gnustep* ytnef*' /etc/yum.repos.d/epel.repo
 
 RUN dnf install sogo -y && dnf remove yum-utils epel-release -y && dnf clean all
 
+
 EXPOSE 80 443 20000
 ENV JWT=;
 ENV WORKERS=3
