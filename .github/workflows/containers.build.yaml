@@ -162,7 +162,7 @@ jobs:
           VERSION=${{ steps.prep.outputs.version }}
           CONTAINER_NAME=${{ matrix.container }}
           CONTAINER_VER=${{ steps.prep.outputs.version }}
-        context: ./${{ steps.prep.outputs.category }}/${{ matrix.container }}
+        context: /${{ steps.prep.outputs.category }}/${{ matrix.container }}
         platforms: ${{ steps.prep.outputs.platform }}
         file: ./${{ steps.prep.outputs.category }}/${{ matrix.container }}/Dockerfile
         push: ${{ steps.prep.outputs.push }}
