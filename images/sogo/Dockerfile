@@ -16,6 +16,6 @@ EXPOSE 80 443 20000
 ENV JWT=;
 ENV WORKERS=3
 
-COPY run-sogo /usr/local/bin/
+COPY ./run-sogo /usr/local/bin/
 
 CMD ["run-sogo"]
