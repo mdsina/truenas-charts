@@ -13,7 +13,6 @@ objectData: The object data of the pvc
     If storageClass is defined on the objectData:
       *  "-" returns "", which means requesting a PV without class
       *  "SCALE-ZFS" returns the value set on Values.global.ixChartContext.storageClassName
-      (*)  "SCALE-SMB" returns the value set on Values.global.ixChartContext.smbStorageClassName (Example for the future)
       *   Else return the original defined storageClass
 
     Else if we are in an ixChartContext, always return the storageClassName defined on the ixChartContext
@@ -31,7 +30,7 @@ objectData: The object data of the pvc
       {{- $className = "\"\"" -}}
     {{- else if eq "SCALE-ZFS" $storageClass -}}
       {{- if not $rootCtx.Values.global.ixChartContext.storageClassName -}}
-        {{- fail (printf "%s - Expected non-empty <global.ixChartContext.storageClassName> on [SCALE-ZFS] storageClass" $caller) -}}
+        {{- fail (printf "%s - Expected non-empty [global.ixChartContext.storageClassName] on [SCALE-ZFS] storageClass" $caller) -}}
       {{- end -}}
       {{- $className = tpl $rootCtx.Values.global.ixChartContext.storageClassName $rootCtx -}}
     {{- else -}}
@@ -40,7 +39,7 @@ objectData: The object data of the pvc
 
   {{- else if $rootCtx.Values.global.ixChartContext -}}
     {{- if not $rootCtx.Values.global.ixChartContext.storageClassName -}}
-      {{- fail (printf "%s - Expected non-empty <global.ixChartContext.storageClassName>" $caller) -}}
+      {{- fail (printf "%s - Expected non-empty [global.ixChartContext.storageClassName]" $caller) -}}
     {{- end -}}
     {{- $className = tpl $rootCtx.Values.global.ixChartContext.storageClassName $rootCtx -}}
 

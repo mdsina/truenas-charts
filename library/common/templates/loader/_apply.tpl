@@ -13,6 +13,9 @@
   {{/* Render ConfigMap(s) */}}
   {{- include "tc.v1.common.spawner.configmap" . | nindent 0 -}}
 
+  {{/* Render priorityclass(s) */}}
+  {{- include "tc.v1.common.spawner.priorityclass" . | nindent 0 -}}
+
   {{/* Render Certificate(s) */}}
   {{- include "tc.v1.common.spawner.scaleCertificate" . | nindent 0 -}}
 
@@ -37,14 +40,20 @@
   {{/* Render Services(s) */}}
   {{- include "tc.v1.common.spawner.service" . | nindent 0 -}}
 
+  {{/* Render storageClass(s) */}}
+  {{- include "tc.v1.common.spawner.storageclass" . | nindent 0 -}}
+
   {{/* Render PVC(s) */}}
   {{- include "tc.v1.common.spawner.pvc" . | nindent 0 -}}
 
-  {{/* Render ingress(s) */}}
-  {{- include "tc.v1.common.spawner.ingress" . | nindent 0 -}}
+  {{/* Render volumeSnapshot(s) */}}
+  {{- include "tc.v1.common.spawner.volumesnapshot" . | nindent 0 -}}
+
+  {{/* Render volumeSnapshotClass(s) */}}
+  {{- include "tc.v1.common.spawner.volumesnapshotclass" . | nindent 0 -}}
 
   {{/* Render ingress(s) */}}
-  {{- include "tc.v1.common.spawner.ingressList" . | nindent 0 -}}
+  {{- include "tc.v1.common.spawner.ingress" . | nindent 0 -}}
 
   {{/* Render Gateway API Route(s) */}}
   {{- include "tc.v1.common.spawner.routes" . | nindent 0 -}}

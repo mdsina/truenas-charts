@@ -4,6 +4,7 @@
 */}}
 
 {{- define "tc.v1.common.spawner.service" -}}
+  {{- $fullname := include "tc.v1.common.lib.chart.names.fullname" $ -}}
 
   {{/* Primary validation for enabled service. */}}
   {{- include "tc.v1.common.lib.service.primaryValidation" $ -}}
@@ -24,18 +25,18 @@
         {{- if not (kindIs "invalid" $objectData.expandObjectName) -}}
           {{- $expandName = $objectData.expandName -}}
         {{- else -}}
-          {{- fail (printf "Service - Expected the defined key [expandObjectName] in <secret.%s> to not be empty" $name) -}}
+          {{- fail (printf "Service - Expected the defined key [expandObjectName] in [secret.%s] to not be empty" $name) -}}
         {{- end -}}
       {{- end -}}
 
       {{- if $expandName -}}
         {{/* Expand the name of the service if expandName resolves to true */}}
-        {{- $objectName = include "tc.v1.common.lib.chart.names.fullname" $ -}}
+        {{- $objectName = $fullname -}}
       {{- end -}}
 
       {{- if and $expandName (not $objectData.primary) -}}
         {{/* If the service is not primary append its name to fullname */}}
-        {{- $objectName = (printf "%s-%s" (include "tc.v1.common.lib.chart.names.fullname" $) $name) -}}
+        {{- $objectName = (printf "%s-%s" $fullname $name) -}}
       {{- end -}}
 
       {{/* Perform validations */}}

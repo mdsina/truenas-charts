@@ -4,6 +4,7 @@
 */}}
 
 {{- define "tc.v1.common.spawner.webhook" -}}
+  {{- $fullname := include "tc.v1.common.lib.chart.names.fullname" $ -}}
 
   {{- range $name, $mutatingWebhookConfiguration := .Values.webhook -}}
 
@@ -12,7 +13,7 @@
       {{- if not (kindIs "invalid" $mutatingWebhookConfiguration.enabled) -}}
         {{- $enabled = $mutatingWebhookConfiguration.enabled -}}
       {{- else -}}
-        {{- fail (printf "Webhook - Expected the defined key [enabled] in <webhook.%s> to not be empty" $name) -}}
+        {{- fail (printf "Webhook - Expected the defined key [enabled] in [webhook.%s] to not be empty" $name) -}}
       {{- end -}}
     {{- end -}}
 
@@ -32,7 +33,7 @@
       {{/* Create a copy of the mutatingWebhookConfiguration */}}
       {{- $objectData := (mustDeepCopy $mutatingWebhookConfiguration) -}}
 
-      {{- $objectName := (printf "%s-%s" (include "tc.v1.common.lib.chart.names.fullname" $) $name) -}}
+      {{- $objectName := (printf "%s-%s" $fullname $name) -}}
       {{- if hasKey $objectData "expandObjectName" -}}
         {{- if not $objectData.expandObjectName -}}
           {{- $objectName = $name -}}

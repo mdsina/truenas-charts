@@ -130,6 +130,8 @@ podOptions:
   enableServiceLinks: false
   hostNetwork: false
   hostPID: false
+  hostIPC: false
+  hostUsers: false
   shareProcessNamespace: false
   restartPolicy: Always
   dnsPolicy: ClusterFirst
@@ -138,7 +140,11 @@ podOptions:
       - name: ndots
         value: "1"
   hostAliases: []
-  nodeSelector: {}
+  nodeSelector:
+    kubernetes.io/arch: "amd64"
+  # -- Used to enforce a good spread for Deployments and StatefulSets by default
+  defaultSpread: true
+  topologySpreadConstraints: []
   tolerations: []
   schedulerName: ""
   priorityClassName: ""
@@ -200,6 +206,7 @@ persistence:
     enabled: true
     type: emptyDir
     mountPath: /var/logs
+    medium: Memory
     targetSelectAll: true
   varrun:
     enabled: true
@@ -211,6 +218,7 @@ persistence:
     enabled: true
     type: emptyDir
     mountPath: /tmp
+    medium: Memory
     targetSelectAll: true
   devshm:
     enabled: true
@@ -218,10 +226,111 @@ persistence:
     mountPath: /dev/shm
     medium: Memory
     targetSelectAll: true
+#  iscsi:
+#    enabled: true
+#    type: iscsi
+#    mountPath: /dev/shm
+#    iscsi:
+#      targetPortal: 10.0.2.15:3260
+#      portals: ['10.0.2.16:3260', '10.0.2.17:3260'] #optional
+#      iqn: iqn.2001-04.com.example:storage.kube.sys1.xyz
+#      lun: 0
+#      fsType: ext4 #Optional
+#      iscsiInterface: default #Optional
+#      initiatorName: iqn.1994-05.com.redhat:node1 #Optional
+#      authSession:
+#        username: "someusername"
+#        password: "somepassword"
+#        usernameInitiator: "someusernameInitiator"
+#        passwordInitiator: "somepasswordInitiator"
+#      authDiscovery:
+#        username: "someusername"
+#        password: "somepassword"
+#        usernameInitiator: "someusernameInitiator"
+#        passwordInitiator: "somepasswordInitiator"
+#  vct:
+#    enabled: true
+#    type: vct
+#    mountPath: /shared
+#  dynamic-pvc:
+#    enabled: true
+#    type: pvc
+#    mountPath: /shared
+#    targetSelectAll: true
+#  dynamic-pvc-dataSource:
+#    enabled: true
+#    type: pvc
+#    mountPath: /shared
+#    targetSelectAll: true
+#    dataSource:
+#      kind: "PersistentVolumeClaim"
+#      name: "existingPVC"
+#  existing-claim:
+#    enabled: true
+#    type: pvc
+#    existingClaim: "someclaim"
+#    mountPath: /shared
+#    targetSelectAll: true
+#  existingpv-pvc:
+#    enabled: true
+#    type: pvc
+#    mountPath: /shared
+#    targetSelectAll: true
+#    volumeName: "somePV"
+#  static-nfs-pvc:
+#    enabled: true
+#    type: pvc
+#    mountPath: /shared
+#    targetSelectAll: true
+#    static:
+#      mode: nfs
+#      server: "/someserver"
+#      share: "someshare"
+#  static-smb-pvc:
+#    enabled: true
+#    type: pvc
+#    mountPath: /shared
+#    targetSelectAll: true
+#    static:
+#      mode: smb
+#      server: "/someserver"
+#      share: "someshare"
+#      domain: "somedomain"
+#      user: "someuser"
+#      password: "somepass"
+#  static-custom-pvc:
+#    enabled: true
+#    type: pvc
+#    mountPath: /shared
+#    targetSelectAll: true
+#    static:
+#      mode: custom
+#      provisioner: "some.provisioner"
+#      driver: "somedriver"
+#      # Custom CSI definition here
+#      csi: {}
+#  example-volumesnapshot:
+#    enabled: true
+#    type: pvc
+#    mountPath: /shared
+#    targetSelectAll: true
+#    volumeSnapshots:
+#      - name: "mysnapshot"
+#        volumeSnapshotClassName: "mysnapshotclass" (optional)
 
 persistenceList: []
 
 deviceList: []
+
+volumeSnapshotClass: []
+volumeSnapshots: []
+# volumeSnapshots:
+#   - name: "mycustomsnapshot"
+#     volumeSnapshotClassName: "mycustomsnapshot" (optional)
+#     source:
+#       # pick one
+#       persistentVolumeClaimName: "mypvcname" (does not get altered)
+#       volumeSnapshotContentName: "mysnapshotname"
 
 # -- Injected from SCALE middleware
 # Only for reference here
@@ -237,7 +346,10 @@ ixCertificates: []
 ixVolumes: []
 
 # -- (docs/imagePullSecrets.md)
-imagePullSecret: []
+imagePullSecret: {}
+
+# -- (docs/imagePullSecrets.md)
+imagePullSecretList: []
 
 # -- (docs/configmap.md)
 configmap: {}
@@ -251,9 +363,6 @@ serviceAccount: {}
 # -- (docs/rbac.md)
 rbac: {}
 
-# -- (docs/volumeClaimTemplates) (StatefulSet only)
-volumeClaimTemplates: {}
-
 # -- (docs/scaleExternalInterface.md)
 scaleExternalInterface: []
 
@@ -266,26 +375,36 @@ scaleGPU: []
 # NOTES.txt
 notes:
   header: |
-    # Welcome to using <{{ .Chart.Name }}>.
-    Thank you for installing thank you for choosing TrueCharts
+    # Thank you for installing [{{ .Chart.Name }}] by TrueCharts.
   # custom: "{{ toYaml $.Values }}"
   custom: |
-    ## Using <{{ .Chart.Name }}>
-    {{- if .Values.iXPortals -}}
+    {{- if .Values.iXPortals }}
     ## Connecting externally
     You can use this Chart by opening one of the following links in your browser:
-    {{- range .Values.iXPortals -}}
+
+    {{- range .Values.iXPortals }}
+    - {{ toYaml . }}
+    {{- end -}}
+    {{- end }}
+
+    ## [{{ .Chart.Name }}] Sources
+
+    {{- range .Chart.Sources }}
     - {{ . }}
     {{- end -}}
-    {{- end -}}
+
+    {{- $link := .Chart.Annotations.docs -}}
+    {{- if not $link -}}
+      {{- $link = .Chart.Home -}}
+    {{- end }}
+    [See more for [{{ $.Chart.Name }}] at [{{ $link }}]
   footer: |
     ## Documentation
     Please check out the TrueCharts documentation on:
-    https://truecharts.com
+    https://truecharts.org
 
     OpenSource can only exist with your help, please consider supporting TrueCharts:
     https://truecharts.org/sponsor
-
 
 # -- iXsystems prototype values.yaml based portals
 iXPortals: []
@@ -315,7 +434,7 @@ APPURL: ""
 
 gluetunImage:
   repository: tccr.io/truecharts/gluetun
-  tag: v3.35.0@sha256:d86c128a3b480b6de94c81928e1007390fc0722eb4be8cd087c5c292fbec7a5b
+  tag: v3.36.0@sha256:0cd36b27fcfc21b9ab738a594a8e477e94e42fd7c2a52539615bb2c8cac2d75e
   pullPolicy: IfNotPresent
 
 netshootImage:
@@ -325,22 +444,22 @@ netshootImage:
 
 tailscaleImage:
   repository: tccr.io/truecharts/tailscale
-  tag: v1.44.0@sha256:124f3cd161b3036cb77162c7f08d4291432ed2e7046ed75a3c40fdd75d1bc1d3
+  tag: v1.52.0@sha256:806efacf7c05d3fd2c8ac3ca9606f58469022f56e62f20a3e9ad136174d0e27f
   pullPolicy: IfNotPresent
 
 codeserverImage:
   repository: tccr.io/truecharts/code-server
-  tag: v4.16.0@sha256:5ea1c9c44636422ca8e3b8dfffcdbe1a95c6ff80a01e553d24a51e5431c72ce7
+  tag: v4.18.0@sha256:e59861c2753490910c08bc3db5ea09234c9a80a3fcbac810621084c7178ce4b0
   pullPolicy: IfNotPresent
 
 alpineImage:
   repository: tccr.io/truecharts/alpine
-  tag: v3.18.2@sha256:a661597195a991150580f4915018663dd18bc36f5fef1e88e00c7a3e7b93e127
+  tag: v3.18.4@sha256:17cd77e25d3fa829d168caec4db7bb5b52ceeb935d8ca0d1180de6f615553dc4
   pullPolicy: IfNotPresent
 
 scratchImage:
   repository: tccr.io/truecharts/scratch
-  tag: latest@sha256:1a9a10a0a5f5cb5fe4b30ac6d9c56ff87ad47f3f3490bafb6938fc155230131b
+  tag: latest@sha256:e7d1aaa6e29e7bcf3e3f13a8fc41803ca81b2614f72d11287ca4dcab4850bd99
   pullPolicy: IfNotPresent
 
 kubectlImage:
@@ -402,6 +521,26 @@ ingress:
     # -- Enables or disables the ingress
     enabled: false
 
+    # -- Adds integrations to ingress
+#    integration:
+#      homepage:
+#        enabled: true
+#        # Default: chart name
+#        name: somename
+#        # Default: chart description
+#        description: some description
+#        group: somegroup
+#        # Default: chart icon
+#        icon: icon.png
+#        pod-selector: ""
+#        widget:
+#          # Default: chartname
+#          type: "sometype"
+#          # Default: host-path of first ingress
+#          url: "https://example.com"
+#          custom:
+#            - somesetting: some value
+
     # -- Make this the primary ingress (used in probes, notes, etc...).
     # If there is more than 1 ingress, make sure that only 1 ingress is marked as primary.
     primary: true
@@ -449,6 +588,9 @@ ingress:
     # -- Set the ingressClass that is used for this ingress.
     # Requires Kubernetes >=1.19
     ingressClassName:  # "nginx"
+
+    # Enable or disable CORS Requests to the ingress
+    allowCors: false
 
     ## Configure the hosts for the ingress
     hosts:
@@ -543,6 +685,36 @@ webhook:
     enabled: false
     type: mutating
     webhooks: []
+
+
+# priorityClass:
+#   example:
+#     provisioner: some.provisioner.io
+#     enabled: true
+#     value: 1000000
+#     preemptionPolicy: PreemptLowerPriority
+#     globalDefault: false
+#     description: "some description"
+
+# # -- create storageClasses on demand
+# storageClass:
+#   example:
+#     provisioner: some.provisioner.io
+#     enabled: true
+#     parameters: {}
+#     reclaimPolicy: retain
+#     allowVolumeExpansion: true
+#     volumeBindingMode: Immediate
+#     mountOptions: []
+
+# # -- create volumeSnapshotClass on demand
+# volumeSnapshotClass:
+#   example:
+#     enabled: true
+#     driver: some.driver.io
+#     deletionPolicy: Retain
+#     isDefault: false
+#     parameters: {}
 
 metrics:
   main:
@@ -769,10 +941,14 @@ cnpg:
     primaryUpdateStrategy: unsupervised
     # -- enable to create extra pgbouncer for readonly access
     acceptRO: false
-    # -- storage size for the two pvc's per instance
-    storage:
-      size: "256Gi"
-      walsize: "256Gi"
+    # # -- storage size for the data pvc's
+    # # Follows the same spec as .Values.Persistence type=PVC
+    # storage:
+    #   size: "256Gi"
+    # # -- storage size for the wal pvc's
+    # # Follows the same spec as .Values.Persistence type=PVC
+    # walStorage:
+    #   size: "256Gi"
     # -- Gets scaled to 0 if hibernation is true
     pooler:
       instances: 2

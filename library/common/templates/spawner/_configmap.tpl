@@ -4,6 +4,7 @@
 */}}
 
 {{- define "tc.v1.common.spawner.configmap" -}}
+  {{- $fullname := include "tc.v1.common.lib.chart.names.fullname" $ -}}
 
   {{- range $name, $configmap := .Values.configmap -}}
 
@@ -12,7 +13,7 @@
       {{- if not (kindIs "invalid" $configmap.enabled) -}}
         {{- $enabled = $configmap.enabled -}}
       {{- else -}}
-        {{- fail (printf "ConfigMap - Expected the defined key [enabled] in <configmap.%s> to not be empty" $name) -}}
+        {{- fail (printf "ConfigMap - Expected the defined key [enabled] in [configmap.%s] to not be empty" $name) -}}
       {{- end -}}
     {{- end -}}
 
@@ -33,15 +34,15 @@
       {{/* Create a copy of the configmap */}}
       {{- $objectData := (mustDeepCopy $configmap) -}}
 
-      {{- $objectName := (printf "%s-%s" (include "tc.v1.common.lib.chart.names.fullname" $) $name) -}}
+      {{- $objectName := (printf "%s-%s" $fullname $name) -}}
       {{- if hasKey $objectData "expandObjectName" -}}
         {{- if not $objectData.expandObjectName -}}
           {{- $objectName = $name -}}
         {{- end -}}
       {{- end -}}
 
-      {{/* Perform validations */}}
-      {{- include "tc.v1.common.lib.chart.names.validation" (dict "name" $objectName) -}}
+      {{/* Perform validations */}} {{/* Configmaps have a max name length of 253 */}}
+      {{- include "tc.v1.common.lib.chart.names.validation" (dict "name" $objectName "length" 253) -}}
       {{- include "tc.v1.common.lib.configmap.validation" (dict "objectData" $objectData) -}}
       {{- include "tc.v1.common.lib.metadata.validation" (dict "objectData" $objectData "caller" "ConfigMap") -}}
 

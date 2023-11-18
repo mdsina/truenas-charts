@@ -10,7 +10,7 @@
   {{- $cnpgClusterLabels := $values.labels -}}
   {{- $cnpgClusterAnnotations := $values.annotations -}}
   {{- $hibernation := "off" -}}
-  {{- if or $values.hibernate $.Values.global.stopAll -}}
+  {{- if or $values.hibernate (include "tc.v1.common.lib.util.stopAll" $) -}}
     {{- $hibernation = "on" -}}
   {{- end }}
 ---
@@ -45,25 +45,11 @@ spec:
 
   storage:
     pvcTemplate:
-      {{- with (include "tc.v1.common.lib.storage.storageClassName" ( dict "rootCtx" $ "objectData" $values.storage )) | trim }}
-      storageClassName: {{ . }}
-      {{- end }}
-      accessModes:
-        - ReadWriteOnce
-      resources:
-        requests:
-          storage: {{ tpl ($values.storage.walsize | default $.Values.fallbackDefaults.vctSize) $ | quote }}
+      {{- include "tc.v1.common.lib.storage.pvc.spec" (dict "rootCtx" $ "objectData" $values.storage) | trim | nindent 6 }}
 
   walStorage:
     pvcTemplate:
-      {{- with (include "tc.v1.common.lib.storage.storageClassName" ( dict "rootCtx" $ "objectData" $values.storage )) | trim }}
-      storageClassName: {{ . }}
-      {{- end }}
-      accessModes:
-        - ReadWriteOnce
-      resources:
-        requests:
-          storage: {{ tpl ($values.storage.walsize | default $.Values.fallbackDefaults.vctSize) $ | quote }}
+      {{- include "tc.v1.common.lib.storage.pvc.spec" (dict "rootCtx" $ "objectData" $values.walStorage) | trim | nindent 6 }}
 
   monitoring:
     enablePodMonitor: {{ $values.monitoring.enablePodMonitor | default true }}

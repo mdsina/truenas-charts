@@ -4,6 +4,7 @@
 */}}
 
 {{- define "tc.v1.common.spawner.workload" -}}
+  {{- $fullname := include "tc.v1.common.lib.chart.names.fullname" $ -}}
 
   {{/* Primary validation for enabled workload. */}}
   {{- include "tc.v1.common.lib.workload.primaryValidation" $ -}}
@@ -16,9 +17,9 @@
       {{- $objectData := (mustDeepCopy $workload) -}}
 
       {{/* Generate the name of the workload */}}
-      {{- $objectName := include "tc.v1.common.lib.chart.names.fullname" $ -}}
+      {{- $objectName := $fullname -}}
       {{- if not $objectData.primary -}}
-        {{- $objectName = printf "%s-%s" (include "tc.v1.common.lib.chart.names.fullname" $) $name -}}
+        {{- $objectName = printf "%s-%s" $fullname $name -}}
       {{- end -}}
 
       {{/* Perform validations */}}
@@ -33,7 +34,7 @@
 
       {{/* Set the podSpec so it doesn't fail on nil pointer */}}
       {{- if not (hasKey $objectData "podSpec") -}}
-        {{- fail "Workload - Expected <podSpec> key to exist" -}}
+        {{- fail "Workload - Expected [podSpec] key to exist" -}}
       {{- end -}}
 
       {{/* Call class to create the object */}}

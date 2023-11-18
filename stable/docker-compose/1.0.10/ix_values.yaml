@@ -64,7 +64,7 @@ workload:
 
     type: StatefulSet
     replicas: 1
-    strategy: Recreate
+    strategy: RollingUpdate
 
 persistence:
   nas-certs:
